@@ -1,9 +1,11 @@
 package handlers
 
-
 import (
 	"log"
 	"net/http"
+	"regexp"
+	"strconv"
+	"fmt"
 	"github.com/dohaelsawy/bookStore/data"
 )
 
@@ -22,6 +24,46 @@ func (product *Products) ServeHTTP(rw http.ResponseWriter , r *http.Request){
 	}
 	if r.Method == http.MethodPost{
 		product.addProducts(rw ,r)
+		return
+	}
+
+	if r.Method == http.MethodPut{
+		path := r.URL.Path
+		reg := regexp.MustCompile(`/([0-9]+)`) // "/" here refer to the root 
+		group := reg.FindAllStringSubmatch(path,-1)
+		//product.l.Printf("%v",len(group[0][1]))
+		if len(group) > 1 {
+			http.Error(rw , "it receives more than a group .. panic !!!" , http.StatusBadRequest)
+			return
+		}
+		if len(group[0]) != 2 {
+			http.Error(rw , "it receives more than a group .. panic !!!" , http.StatusBadRequest)
+			return
+		}
+
+		idString := group[0][1] 
+		id , err := strconv.Atoi(idString)
+		if err != nil {
+			http.Error(rw , "can't convert id string to int .. panic !!!" , http.StatusBadRequest)
+			return
+		}
+		product.updateProduct(rw , r , id)
+		return
+
+	}
+}
+
+func (product *Products) updateProduct(rw http.ResponseWriter , r * http.Request , id int){
+	product.l.Println("watch out i am about to change product object")
+	upP := &data.Product{}
+
+	err := upP.FromJson(r.Body)
+	//product.l.Printf("prod : %#v" , upP)
+
+	data.UpdateProduct(id , upP)
+	var ErrProductNotFound = fmt.Errorf("product not found")
+	if err == ErrProductNotFound {
+		http.Error(rw , "can't update the product .. panic" , http.StatusInternalServerError)
 		return
 	}
 }

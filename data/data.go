@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io"
 	"time"
+	"fmt"
 )
 
 type Product struct {
@@ -42,6 +43,29 @@ func AddProduct(p *Product) {
 
 func getNextID() int {
 	return (productList[len(productList)-1].ID + 1)
+}
+
+
+func UpdateProduct(id int , up *Product) error {
+	ip , err := findIDOfProduct(id)
+
+	if err != nil {
+		return err
+	}
+	up.ID = id
+	productList[ip] = up
+	return nil
+}
+
+var ErrProductNotFound = fmt.Errorf("product not found")
+ 
+func findIDOfProduct(id int) (int , error ){
+	for i , p := range productList {
+		if p.ID == id {
+			return i , nil
+		}
+	}
+	return -1, ErrProductNotFound
 }
 
 var productList = []*Product{
