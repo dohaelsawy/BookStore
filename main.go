@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/dohaelsawy/bookStore/handlers"
+	"github.com/gorilla/mux"
 )
 
 func main() {
@@ -17,9 +18,20 @@ func main() {
 	// 1-> init handler of product
 	productHandler := handlers.NewProduct(logger)
 
-	// 2-> init serve mux
-	serveMux := http.NewServeMux()
-	serveMux.Handle("/", productHandler)
+	// 2-> init goriall mux
+	serveMux := mux.NewRouter()
+
+	// get Router
+	getRouter := serveMux.Methods("GET").Subrouter()
+	getRouter.HandleFunc("/product", productHandler.GetProducts)
+
+	// POST Router
+	postRouter := serveMux.Methods("POST").Subrouter()
+	postRouter.HandleFunc("/product", productHandler.AddProducts)
+
+	//PUT Router
+	putRouter := serveMux.Methods(http.MethodPut).Subrouter()
+	putRouter.HandleFunc("/product/{id:[0-9]+}", productHandler.UpdateProduct)
 
 	// 3-> init the server with specified settings
 	s := http.Server{
