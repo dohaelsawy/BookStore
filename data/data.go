@@ -2,9 +2,9 @@ package data
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"time"
-	"fmt"
 )
 
 type Product struct {
@@ -45,9 +45,8 @@ func getNextID() int {
 	return (productList[len(productList)-1].ID + 1)
 }
 
-
-func UpdateProduct(id int , up *Product) error {
-	ip , err := findIDOfProduct(id)
+func UpdateProduct(id int, up *Product) error {
+	ip, err := findIDOfProduct(id)
 
 	if err != nil {
 		return err
@@ -58,11 +57,11 @@ func UpdateProduct(id int , up *Product) error {
 }
 
 var ErrProductNotFound = fmt.Errorf("product not found")
- 
-func findIDOfProduct(id int) (int , error ){
-	for i , p := range productList {
+
+func findIDOfProduct(id int) (int, error) {
+	for i, p := range productList {
 		if p.ID == id {
-			return i , nil
+			return i, nil
 		}
 	}
 	return -1, ErrProductNotFound
