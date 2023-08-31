@@ -7,7 +7,6 @@ import (
 	"os"
 	"os/signal"
 	"time"
-
 	"github.com/dohaelsawy/bookStore/handlers"
 	"github.com/gorilla/mux"
 )
