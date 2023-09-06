@@ -8,6 +8,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
+
 func (product *Products) UpdateProduct(rw http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, e := strconv.Atoi(vars["id"])

@@ -23,6 +23,7 @@ func main() {
 	// get Router
 	getRouter := serveMux.Methods("GET").Subrouter()
 	getRouter.HandleFunc("/product", productHandler.GetProducts)
+	getRouter.HandleFunc("/product/{id:[0-9]+}",productHandler.GetProduct)
 
 	// POST Router
 	postRouter := serveMux.Methods("POST").Subrouter()
@@ -33,6 +34,10 @@ func main() {
 	putRouter := serveMux.Methods(http.MethodPut).Subrouter()
 	putRouter.HandleFunc("/product/{id:[0-9]+}", productHandler.UpdateProduct)
 	putRouter.Use(productHandler.MiddlewareProductValidation)
+
+	//DELETE Router
+	deleteRouter := serveMux.Methods(http.MethodDelete).Subrouter()
+	deleteRouter.HandleFunc("/product/{id:[0-9]+}", productHandler.DeleteProduct)
 
 	// 3-> init the server with specified settings
 	s := http.Server{

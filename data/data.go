@@ -51,6 +51,11 @@ func (p *Products) ToJson(w io.Writer) error {
 	return e.Encode(p)
 
 }
+func (p *Product) ToJson(w io.Writer) error {
+	e := json.NewEncoder(w)
+	return e.Encode(p)
+
+}
 
 func GetProducts() Products {
 	return productList
@@ -85,6 +90,25 @@ func findIDOfProduct(id int) (int, error) {
 		}
 	}
 	return -1, ErrProductNotFound
+}
+
+
+func DeleteProduct(id int) error {
+	idp , err := findIDOfProduct(id) 
+	if err != nil {
+		return ErrProductNotFound
+	}
+	productList = append(productList[:idp],productList[id+1:]... )
+	return nil
+}
+
+func GetOneProduct(id int) (Product , error) {
+	var emptyStruct Product
+	idProd , err := findIDOfProduct(id) ;
+	if err != nil {
+		return emptyStruct , ErrProductNotFound
+	} 
+	return *productList[idProd] , nil
 }
 
 var productList = []*Product{
