@@ -15,6 +15,7 @@ func (product *Products) DeleteProduct (rw http.ResponseWriter , r * http.Reques
 		http.Error(rw , "con't convert id to integer ... panic !!!" , http.StatusBadRequest)
 		return
 	}
+	product.l.Println("watch out deleting one product !!!!")
 	err = data.DeleteProduct(id)
 	if err != nil {
 		http.Error(rw,"can't delete the product ... panic !!!", http.StatusBadRequest)
