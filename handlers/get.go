@@ -3,7 +3,6 @@ package handlers
 import (
 	"net/http"
 	"strconv"
-
 	"github.com/dohaelsawy/bookStore/data"
 	"github.com/gorilla/mux"
 )
@@ -11,6 +10,12 @@ import (
 
 func (product *Products) GetProducts(rw http.ResponseWriter, r *http.Request) {
 	product.l.Println("fetching some data watch out !!!")
+	// db , err := data.DbCreateObject()
+	// if err != nil {
+	// 	http.Error(rw, "products are not found , our getting method is's working .. panic", http.StatusInternalServerError)
+	// 	return
+	// }
+
 	ourProducts := data.GetProducts()
 	err := ourProducts.ToJson(rw)
 	if err != nil {

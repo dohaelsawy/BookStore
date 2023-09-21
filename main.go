@@ -1,3 +1,19 @@
+//Package classification Product API
+//
+//Documenting for product api
+//
+//	Schemes: http
+//	Host: localhost
+//	BasePath: /product
+//
+//	Consumes: 
+//	- application/json
+//	
+//	Produces:
+//	-application/json
+//swagger:meta
+
+
 package main
 
 import (
@@ -9,6 +25,7 @@ import (
 	"time"
 	"github.com/dohaelsawy/bookStore/handlers"
 	"github.com/gorilla/mux"
+	_"github.com/go-sql-driver/mysql"
 )
 
 func main() {
@@ -19,7 +36,7 @@ func main() {
 
 	// 2-> init goriall mux
 	serveMux := mux.NewRouter()
-
+	
 	// get Router
 	getRouter := serveMux.Methods("GET").Subrouter()
 	getRouter.HandleFunc("/product", productHandler.GetProducts)
