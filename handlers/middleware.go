@@ -20,16 +20,14 @@ func NewProduct(l *log.Logger) *Products {
 func (p Products) MiddlewareProductValidation(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
 		prod:= &data.Product{}
-
 		err := prod.FromJson(r.Body)
-
 		if err != nil {
-			http.Error(rw, "can't add the product .. panic", http.StatusInternalServerError)
+			http.Error(rw, err.Error(), http.StatusInternalServerError)
 			return
 		}
 		err = prod.Validate()
 		if err != nil {
-			http.Error(rw, fmt.Sprint("you have validate the porduct fields %s" , err), http.StatusInternalServerError)
+			http.Error(rw, fmt.Sprint("you have validate the porduct fields %v" , err), http.StatusInternalServerError)
 			return
 		}
 		ctx := context.WithValue(r.Context(),keyProduct{},prod)

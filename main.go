@@ -6,13 +6,12 @@
 //	Host: localhost
 //	BasePath: /product
 //
-//	Consumes: 
+//	Consumes:
 //	- application/json
-//	
+//
 //	Produces:
 //	-application/json
 //swagger:meta
-
 
 package main
 
@@ -23,9 +22,10 @@ import (
 	"os"
 	"os/signal"
 	"time"
+
 	"github.com/dohaelsawy/bookStore/handlers"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
-	_"github.com/go-sql-driver/mysql"
 )
 
 func main() {
@@ -36,15 +36,15 @@ func main() {
 
 	// 2-> init goriall mux
 	serveMux := mux.NewRouter()
-	
+
 	// get Router
 	getRouter := serveMux.Methods("GET").Subrouter()
 	getRouter.HandleFunc("/product", productHandler.GetProducts)
-	getRouter.HandleFunc("/product/{id:[0-9]+}",productHandler.GetProduct)
+	getRouter.HandleFunc("/product/{id:[0-9]+}", productHandler.GetProduct)
 
 	// POST Router
 	postRouter := serveMux.Methods("POST").Subrouter()
-	postRouter.HandleFunc("/product", productHandler.AddProducts)
+	postRouter.HandleFunc("/product", productHandler.AddProduct)
 	postRouter.Use(productHandler.MiddlewareProductValidation)
 
 	//PUT Router

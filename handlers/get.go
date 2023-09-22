@@ -10,18 +10,23 @@ import (
 
 func (product *Products) GetProducts(rw http.ResponseWriter, r *http.Request) {
 	product.l.Println("fetching some data watch out !!!")
-	// db , err := data.DbCreateObject()
-	// if err != nil {
-	// 	http.Error(rw, "products are not found , our getting method is's working .. panic", http.StatusInternalServerError)
-	// 	return
-	// }
-
-	ourProducts := data.GetProducts()
-	err := ourProducts.ToJson(rw)
+	db , err := data.DbCreateObject()
 	if err != nil {
 		http.Error(rw, "products are not found , our getting method is's working .. panic", http.StatusInternalServerError)
 		return
 	}
+	defer db.Close()
+	prodlist , err := data.GetProducts(db)
+	if err != nil {
+		http.Error(rw, "can't get list of productss .. panic !!!", http.StatusInternalServerError)
+		return
+	}
+	err = prodlist.ToJson(rw)
+	if err != nil {
+		http.Error(rw, "can't write it in rw .. panic !!!", http.StatusInternalServerError)
+		return
+	}
+	product.l.Println("productsss fetched :}")
 }
 
 func (product *Products) GetProduct (rw http.ResponseWriter , r *http.Request){
@@ -31,17 +36,23 @@ func (product *Products) GetProduct (rw http.ResponseWriter , r *http.Request){
 		http.Error(rw, "can't convert product id to an string panic !!!!!!", http.StatusInternalServerError)
 		return
 	}
-
-	product.l.Println("fetching ONE product !!!!!")
-	p , err := data.GetOneProduct(id) 
+	db , err := data.DbCreateObject()
 	if err != nil {
-		http.Error(rw, "products are not found , our getting method isn't working .. panic", http.StatusInternalServerError)
+		http.Error(rw, "can't open db object ... panic !!!", http.StatusInternalServerError)
+		return
+	}
+	defer db.Close()
+	product.l.Println("fetching ONE product !!!!!")
+	p , err := data.GetOneProduct(db,id) 
+	if err != nil {
+		http.Error(rw, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	err = p.ToJson(rw)
 	if err != nil {
-		http.Error(rw, "can't convert product to json .. panic", http.StatusInternalServerError)
+		http.Error(rw, "can't write it in rw .. panic !!!", http.StatusInternalServerError)
 		return
 	}
+	product.l.Println("product fetched :}")
 }
 
