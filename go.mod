@@ -32,6 +32,7 @@ require (
 	github.com/go-playground/validator/v10 v10.15.3 // indirect
 	github.com/go-sql-driver/mysql v1.7.1 // indirect
 	github.com/go-swagger/go-swagger v0.30.5 // indirect
+	github.com/golang-jwt/jwt/v5 v5.0.0 // indirect
 	github.com/golang/dep v0.5.4 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/uuid v1.3.1 // indirect

@@ -23,7 +23,8 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/dohaelsawy/bookStore/handlers"
+	"github.com/dohaelsawy/bookStore/handlers/product"
+	register "github.com/dohaelsawy/bookStore/handlers/register"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
 )
@@ -33,6 +34,7 @@ func main() {
 	logger := log.New(os.Stdout, "BookStore", log.LstdFlags)
 	// 1-> init handler of product
 	productHandler := handlers.NewProduct(logger)
+	personHandler := register.NewPerson(logger)
 
 	// 2-> init goriall mux
 	serveMux := mux.NewRouter()
@@ -42,10 +44,14 @@ func main() {
 	getRouter.HandleFunc("/product", productHandler.GetProducts)
 	getRouter.HandleFunc("/product/{id:[0-9]+}", productHandler.GetProduct)
 
-	// POST Router
-	postRouter := serveMux.Methods("POST").Subrouter()
-	postRouter.HandleFunc("/product", productHandler.AddProduct)
-	postRouter.Use(productHandler.MiddlewareProductValidation)
+	// POST Routers
+	postRouterProduct := serveMux.Methods("POST").Subrouter()
+	postRouterProduct.HandleFunc("/product" , productHandler.AddProduct)
+	postRouterProduct.Use(productHandler.MiddlewareProductValidation)
+	// ------------------------ registeration ---------------------
+	postRouterPerson := serveMux.Methods("POST").Subrouter()
+	postRouterPerson.HandleFunc("/register", personHandler.Register)
+	postRouterPerson.Use(personHandler.MiddlewarePersonValidation)
 
 	//PUT Router
 	putRouter := serveMux.Methods(http.MethodPut).Subrouter()

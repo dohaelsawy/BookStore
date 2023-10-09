@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/dohaelsawy/bookStore/data"
+	"github.com/dohaelsawy/bookStore/data/product"
 	"github.com/gorilla/mux"
 )
 

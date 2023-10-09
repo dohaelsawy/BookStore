@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"net/http"
-	"github.com/dohaelsawy/bookStore/data"
+	"github.com/dohaelsawy/bookStore/data/product"
 )
 
 type keyProduct struct {}
