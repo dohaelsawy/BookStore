@@ -3,7 +3,6 @@ package data
 import (
 	"encoding/json"
 	"io"
-
 	"github.com/go-playground/validator/v10"
 )
 

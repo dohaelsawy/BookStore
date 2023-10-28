@@ -1,4 +1,4 @@
-package register
+package registerLogin
 
 import (
 	"net/http"

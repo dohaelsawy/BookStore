@@ -31,9 +31,9 @@ func GetPeopleList(db *sql.DB) (People, error) {
 	return PepoleList, nil
 }
 
-func GetOnePerson(db *sql.DB, id int) (Person, error) {
+func GetOnePerson(db *sql.DB, email string) (Person, error) {
 	var p Person
-	result, err := db.Query("SELECT * FROM book WHERE book_id = ?", id)
+	result, err := db.Query("SELECT * FROM person WHERE email = ?", email)
 	if err != nil {
 		return p, err
 	}

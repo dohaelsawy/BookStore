@@ -1,18 +1,3 @@
-//Package classification Product API
-//
-//Documenting for product api
-//
-//	Schemes: http
-//	Host: localhost
-//	BasePath: /product
-//
-//	Consumes:
-//	- application/json
-//
-//	Produces:
-//	-application/json
-//swagger:meta
-
 package main
 
 import (
@@ -24,7 +9,7 @@ import (
 	"time"
 
 	"github.com/dohaelsawy/bookStore/handlers/product"
-	register "github.com/dohaelsawy/bookStore/handlers/register"
+	registerLogin "github.com/dohaelsawy/bookStore/handlers/registerLogin"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
 )
@@ -34,7 +19,7 @@ func main() {
 	logger := log.New(os.Stdout, "BookStore", log.LstdFlags)
 	// 1-> init handler of product
 	productHandler := handlers.NewProduct(logger)
-	personHandler := register.NewPerson(logger)
+	personHandler := registerLogin.NewPerson(logger)
 
 	// 2-> init goriall mux
 	serveMux := mux.NewRouter()
@@ -51,7 +36,9 @@ func main() {
 	// ------------------------ registeration ---------------------
 	postRouterPerson := serveMux.Methods("POST").Subrouter()
 	postRouterPerson.HandleFunc("/register", personHandler.Register)
+	postRouterPerson.HandleFunc("/login", personHandler.Register)
 	postRouterPerson.Use(personHandler.MiddlewarePersonValidation)
+
 
 	//PUT Router
 	putRouter := serveMux.Methods(http.MethodPut).Subrouter()

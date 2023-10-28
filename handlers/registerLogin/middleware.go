@@ -1,11 +1,11 @@
-package register
+package registerLogin
 
 import (
 	"log"
 	"net/http"
 	"fmt"
 	"context"
-	"github.com/dohaelsawy/bookStore/data/person"
+	data "github.com/dohaelsawy/bookStore/data/person"
 	//import "github.com/golang-jwt/jwt/v5"
 )
 
