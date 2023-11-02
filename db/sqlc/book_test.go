@@ -51,6 +51,12 @@ func TestBookUpdating(t *testing.T) {
 	require.NotZero(t , book.UpdatedAt)
 }
 
+func TestGetBook(t *testing.T){
+	book , err := testDB.GetBook(context.Background() , 3)
+	require.NoError(t , err)
+	require.NotNil(t , book)
+}
+
 func TestBookDeleting(t *testing.T) {
 	err := testDB.DeleteBook(context.Background(), 1)
 	require.NoError(t , err)
