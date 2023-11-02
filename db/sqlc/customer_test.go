@@ -51,6 +51,12 @@ func TestCustomerUpdating(t *testing.T) {
 	require.NotZero(t , customer.CustomerID)
 }
 
+func TestGetCustomer(t *testing.T){
+	customer , err := testDB.GetCustomer(context.Background() , 3)
+	require.NoError(t , err)
+	require.NotNil(t , customer)
+}
+
 func TestCustomerDeleting(t *testing.T) {
 	err := testDB.Deletecustomer(context.Background(), 1)
 	require.NoError(t , err)
