@@ -52,3 +52,12 @@ func RandomPssword() string {
 func RandomPhoneNumber() string {
 	return randomString(11 , nums)
 }
+
+func RandomShippingMethod() string {
+	methods := []string{"paypal" , "visa" , "criditcard"}
+	k := len(methods)
+	return methods[rand.Intn(k)]
+}
+
+
+
