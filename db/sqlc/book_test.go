@@ -8,7 +8,7 @@ import (
 	"github.com/dohaelsawy/bookStore/util"
 )
 
-func TestBookCreating(t *testing.T) {
+func TestBookCreating(t *testing.T) Book{
 	arg := CreateBookParams{
 		Name:        util.RandomString(10),
 		PublishDate: "2021-01-01",
@@ -27,9 +27,11 @@ func TestBookCreating(t *testing.T) {
 	require.NotZero(t , book.BookID)
 	require.NotZero(t , book.CreatedAt)
 	require.NotZero(t , book.UpdatedAt)
+
+	return book
 }
 
-func TestBookUpdating(t *testing.T) {
+func TestBookUpdating(t *testing.T) Book{
 	arg := UpdateBookParams{
 		BookID: 	2,
 		Name:       util.RandomString(10),
@@ -49,12 +51,16 @@ func TestBookUpdating(t *testing.T) {
 	require.NotZero(t , book.BookID)
 	require.NotZero(t , book.CreatedAt)
 	require.NotZero(t , book.UpdatedAt)
+
+	return book
 }
 
-func TestGetBook(t *testing.T){
+func TestGetBook(t *testing.T) Book{
 	book , err := testDB.GetBook(context.Background() , 3)
 	require.NoError(t , err)
 	require.NotNil(t , book)
+
+	return book
 }
 
 func TestBookDeleting(t *testing.T) {
@@ -62,9 +68,11 @@ func TestBookDeleting(t *testing.T) {
 	require.NoError(t , err)
 }
 
-func TestBookAllList(t *testing.T){
+func TestBookAllList(t *testing.T) *[]Book{
 	books , err := testDB.ListBooks(context.Background())
 	require.NoError(t , err)
 	require.NotEmpty(t , books)
 	require.NotZero(t , len(books))
+
+	return &books
 }

@@ -8,7 +8,7 @@ import (
 	"github.com/dohaelsawy/bookStore/util"
 )
 
-func TestCustomerCreating(t *testing.T) {
+func TestCustomerCreating(t *testing.T) Customer{
 	arg := CreatecustomerParams{
 		FirstName: util.RandomString(6),
 		LastName: util.RandomString(6),
@@ -27,9 +27,11 @@ func TestCustomerCreating(t *testing.T) {
 	require.Equal(t, arg.City, customer.City)
 	require.Equal(t, arg.PhoneNumber, customer.PhoneNumber)
 	require.NotZero(t , customer.CustomerID)
+
+	return customer
 }
 
-func TestCustomerUpdating(t *testing.T) {
+func TestCustomerUpdating(t *testing.T) Customer{
 	arg := UpdatecustomerParams{
 		CustomerID: 3,
 		FirstName: util.RandomString(6),
@@ -49,12 +51,16 @@ func TestCustomerUpdating(t *testing.T) {
 	require.Equal(t, arg.City, customer.City)
 	require.Equal(t, arg.PhoneNumber, customer.PhoneNumber)
 	require.NotZero(t , customer.CustomerID)
+
+	return customer
 }
 
-func TestGetCustomer(t *testing.T){
+func TestGetCustomer(t *testing.T) Customer{
 	customer , err := testDB.GetCustomer(context.Background() , 3)
 	require.NoError(t , err)
 	require.NotNil(t , customer)
+
+	return customer
 }
 
 func TestCustomerDeleting(t *testing.T) {
@@ -62,9 +68,11 @@ func TestCustomerDeleting(t *testing.T) {
 	require.NoError(t , err)
 }
 
-func TestCustomerAllList(t *testing.T){
+func TestCustomerAllList(t *testing.T) *[]Customer{
 	customers , err := testDB.ListCustomers(context.Background())
 	require.NoError(t , err)
 	require.NotEmpty(t , customers)
 	require.NotZero(t , len(customers))
+
+	return &customers
 }
