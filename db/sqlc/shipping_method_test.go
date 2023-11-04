@@ -8,7 +8,8 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestShippingMethodCreating(t *testing.T) ShippingMethod{
+
+func CreateShippingMethod(t *testing.T) ShippingMethod{
 	arg := CreateShippingMehodParams{
 		Name: util.RandomShippingMethod(),
 		Cost: int32(util.RandomNumber(100 , 500)),
@@ -22,12 +23,14 @@ func TestShippingMethodCreating(t *testing.T) ShippingMethod{
 	require.Equal(t , method.Cost , arg.Cost)
 
 	require.NotZero(t , method.ShippingMethodID)
-
-
 	return method
 }
 
-func TestShippingMethodUpdating(t *testing.T) ShippingMethod{
+func TestShippingMethodCreating(t *testing.T) {
+	CreateShippingMethod(t)
+}
+
+func TestShippingMethodUpdating(t *testing.T) {
 	arg := UpdateShippingMehodParams{
 		ShippingMethodID: 1,
 		Name: util.RandomShippingMethod(),
@@ -42,26 +45,19 @@ func TestShippingMethodUpdating(t *testing.T) ShippingMethod{
 	require.Equal(t , method.Cost , arg.Cost)
 
 	require.NotZero(t , method.ShippingMethodID)
-
-
-	return method
 }
 
-func TestGetShippingMethod(t *testing.T) ShippingMethod{
+func TestGetShippingMethod(t *testing.T) {
 	method , err := testDB.GetShippingMehod(context.Background(),2)
 	require.NoError(t , err)
 	require.NotNil(t , method)
-
-	return method
 }
 
-func TestGetListShippingMethod(t *testing.T) *[]ShippingMethod{
+func TestGetListShippingMethod(t *testing.T) {
 	methods , err := testDB.ListShippingMthods(context.Background())
 	require.NoError(t , err)
 	require.NotNil(t , methods)
 	require.NotZero(t , len(methods))
-
-	return &methods
 }
 
 
