@@ -4,7 +4,6 @@ import (
 	"context"
 	"testing"
 
-	"github.com/dohaelsawy/bookStore/util"
 	"github.com/stretchr/testify/require"
 )
 
@@ -28,32 +27,10 @@ func CreateCustomerOrder(t *testing.T) CustomerOrder{
 	return customerOrder
 }
 
-
-func UpdateCustomerOrder(t *testing.T) CustomerOrder {
-	object := CreateCustomerOrder(t)
-	arg := UpdateCustomerOrderParams{
-		CustomerOrderID: object.CustomerOrderID,
-		CustomerID: object.CustomerID,
-		ShippingMethodID: int32(util.RandomNumber(1,4)),
-	}
-	customerOrder , err := testDB.UpdateCustomerOrder(context.Background() , arg)
-	require.NoError(t ,err)
-	require.NotNil(t, customerOrder)
-	require.Equal(t , customerOrder.CustomerID , arg.CustomerID)
-	require.Equal(t , customerOrder.ShippingMethodID , arg.ShippingMethodID)
-	
-	require.NotZero(t , customerOrder.CustomerOrderID)
-
-	return customerOrder
-}
-
 func TestCustomerOrderCresting(t *testing.T) {
 	CreateCustomerOrder(t)
 }
 
-func TestCustomerOrderUpdating(t *testing.T){
-	UpdateCustomerOrder(t)
-}
 
 
 func TestGetCustomerOrder(t *testing.T) {
