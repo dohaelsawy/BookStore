@@ -5,16 +5,20 @@ import (
 	"log"
 	"os"
 	"testing"
-	_"github.com/lib/pq"
+
+	"github.com/dohaelsawy/bookStore/util"
 	"github.com/jackc/pgx/v5"
+	_ "github.com/lib/pq"
 )
-const (
-	dataSource = "postgresql://root:root@localhost:5432/postgres?sslmode=disable"
-)
+
 var testDB *Queries
 
 func TestMain(m *testing.M){
-	conn , err := pgx.Connect(context.Background() , dataSource)
+	config ,err := util.LoadAppEnv("../..")
+	if err != nil {
+		log.Fatal("can't load env variables ... panic " , err)
+	}
+	conn , err := pgx.Connect(context.Background() , config.DBSource)
 	if err != nil {
 		log.Fatal("the error is in db connection ... panic " , err)
 	} 
