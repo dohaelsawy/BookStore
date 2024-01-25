@@ -10,6 +10,7 @@ CREATE TABLE "customer"(
 CREATE TABLE "book"(
     "book_id" SERIAL PRIMARY KEY,
     "name" VARCHAR(255) NOT NULL,
+    "author" VARCHAR(255) NOT NULL,
     "publish_date" VARCHAR(255) NOT NULL,
     "price" INT NOT NULL,
     "sku" VARCHAR(255) NOT NULL,
@@ -26,6 +27,7 @@ CREATE TABLE "shipping_method"(
 
 CREATE TABLE "customer_order"(
     "customer_order_id" SERIAL PRIMARY KEY,
+    "order_id" INT NOT NULL,
     "order_date" VARCHAR(255) NOT NULL,
     "customer_id" INT NOT NULL ,
     "shipping_method_id" INT NOT NULL 
@@ -38,6 +40,6 @@ CREATE TABLE "order_line"(
     "price" INT NOT NULL
 );
 
-ALTER TABLE "order_line" ADD FOREIGN KEY ("order_id") REFERENCES "customer_order" ("customer_order_id");
 ALTER TABLE "order_line" ADD FOREIGN KEY ("book_id") REFERENCES "book" ("book_id");
 ALTER TABLE "customer_order" ADD FOREIGN KEY ("customer_id") REFERENCES "customer" ("customer_id");
+ALTER TABLE "customer_order" ADD FOREIGN KEY ("order_id") REFERENCES "order_line" ("line_id");
