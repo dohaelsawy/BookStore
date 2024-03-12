@@ -22,7 +22,6 @@ func NewServer(store *db.Store , l *log.Logger) *Server{
 	router.DELETE("/deleteBook/:id", server.deleteBook)
 	router.GET("/getBook/:id", server.getBook)
 	router.GET("/listBooks",server.listBooks)
-
 	server.router = router
 	return &server
 }
