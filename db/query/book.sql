@@ -8,15 +8,15 @@ ORDER BY book_id;
 
 -- name: CreateBook :one
 INSERT INTO book (
-  name, publish_date ,price ,sku ,description
+  name, publish_date ,price ,sku ,description,author
 ) VALUES (
-  $1, $2,$3,$4,$5
+  $1, $2,$3,$4,$5,$6
 )
 RETURNING *;
 
 
 -- name: UpdateBook :one
-UPDATE book SET name = $2 , publish_date = $3 , price = $4 , sku=$5 , description = $6
+UPDATE book SET name = $2 , publish_date = $3 , price = $4 , sku=$5 , description = $6,author = $7
 WHERE book_id = $1
 RETURNING *;
 
