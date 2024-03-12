@@ -21,13 +21,14 @@ type Book struct {
 }
 
 type Customer struct {
-	CustomerID  int32  `json:"customer_id"`
-	FirstName   string `json:"first_name"`
-	LastName    string `json:"last_name"`
-	Email       string `json:"email"`
-	Password    string `json:"password"`
-	City        string `json:"city"`
-	PhoneNumber string `json:"phone_number"`
+	CustomerID  int32       `json:"customer_id"`
+	FirstName   string      `json:"first_name"`
+	LastName    string      `json:"last_name"`
+	Email       string      `json:"email"`
+	Password    string      `json:"password"`
+	City        string      `json:"city"`
+	PhoneNumber string      `json:"phone_number"`
+	Token       pgtype.Text `json:"token"`
 }
 
 type CustomerOrder struct {

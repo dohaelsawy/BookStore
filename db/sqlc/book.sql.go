@@ -11,9 +11,9 @@ import (
 
 const createBook = `-- name: CreateBook :one
 INSERT INTO book (
-  name, publish_date ,price ,sku ,description
+  name, publish_date ,price ,sku ,description,author
 ) VALUES (
-  $1, $2,$3,$4,$5
+  $1, $2,$3,$4,$5,$6
 )
 RETURNING book_id, name, author, publish_date, price, sku, description, created_at, updated_at
 `
@@ -24,6 +24,7 @@ type CreateBookParams struct {
 	Price       int32  `json:"price"`
 	Sku         string `json:"sku"`
 	Description string `json:"description"`
+	Author      string `json:"author"`
 }
 
 func (q *Queries) CreateBook(ctx context.Context, arg CreateBookParams) (Book, error) {
@@ -33,6 +34,7 @@ func (q *Queries) CreateBook(ctx context.Context, arg CreateBookParams) (Book, e
 		arg.Price,
 		arg.Sku,
 		arg.Description,
+		arg.Author,
 	)
 	var i Book
 	err := row.Scan(
@@ -116,7 +118,7 @@ func (q *Queries) ListBooks(ctx context.Context) ([]Book, error) {
 }
 
 const updateBook = `-- name: UpdateBook :one
-UPDATE book SET name = $2 , publish_date = $3 , price = $4 , sku=$5 , description = $6
+UPDATE book SET name = $2 , publish_date = $3 , price = $4 , sku=$5 , description = $6,author = $7
 WHERE book_id = $1
 RETURNING book_id, name, author, publish_date, price, sku, description, created_at, updated_at
 `
@@ -128,6 +130,7 @@ type UpdateBookParams struct {
 	Price       int32  `json:"price"`
 	Sku         string `json:"sku"`
 	Description string `json:"description"`
+	Author      string `json:"author"`
 }
 
 func (q *Queries) UpdateBook(ctx context.Context, arg UpdateBookParams) (Book, error) {
@@ -138,6 +141,7 @@ func (q *Queries) UpdateBook(ctx context.Context, arg UpdateBookParams) (Book, e
 		arg.Price,
 		arg.Sku,
 		arg.Description,
+		arg.Author,
 	)
 	var i Book
 	err := row.Scan(
