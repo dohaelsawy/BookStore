@@ -1,20 +1,4 @@
-//Package classification Product API
-//
-//Documenting for product api
-//
-//	Schemes: http
-//	Host: localhost
-//	BasePath: /product
-//
-//	Consumes:
-//	- application/json
-//
-//	Produces:
-//	-application/json
-//swagger:meta
-
 package main
-
 import (
 	"context"
 	"log"
@@ -44,4 +28,5 @@ func main() {
 	if err != nil {
 		log.Fatal("the error is cannot start server... panic ", err)
 	}
+
 }
