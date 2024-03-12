@@ -16,6 +16,7 @@ func CreateBook(t *testing.T) Book{
 		Price:       int32(util.RandomNumber(100 , 400)),
 		Sku:         "abc-def-ghi",
 		Description: util.RandomString(50),
+		Author: util.RandomString(10),
 	}
 	book, err := testDB.CreateBook(context.Background(), arg)
 	require.NoError(t , err)
@@ -25,6 +26,7 @@ func CreateBook(t *testing.T) Book{
 	require.Equal(t, arg.Price, book.Price)
 	require.Equal(t, arg.Sku, book.Sku)
 	require.Equal(t, arg.Description, book.Description)
+	require.Equal(t, arg.Author, book.Author)
 	require.NotZero(t , book.BookID)
 	require.NotZero(t , book.CreatedAt)
 	require.NotZero(t , book.UpdatedAt)
