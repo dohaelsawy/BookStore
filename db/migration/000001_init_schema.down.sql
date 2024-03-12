@@ -1,0 +1,6 @@
+DROP TABLE IF EXISTS customer_order;
+DROP TABLE IF EXISTS order_line;
+DROP TABLE IF EXISTS book;
+
+DROP TABLE IF EXISTS customer;
+DROP TABLE IF EXISTS shipping_method;
