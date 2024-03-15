@@ -7,27 +7,24 @@ package db
 
 import (
 	"context"
-
-	"github.com/jackc/pgx/v5/pgtype"
 )
 
 const createcustomer = `-- name: Createcustomer :one
 INSERT INTO customer (
-  first_name, last_name ,email ,password ,city,phone_number,token
+  first_name, last_name ,email ,password ,city,phone_number
 ) VALUES (
-  $1, $2,$3,$4,$5,$6,$7
+  $1, $2,$3,$4,$5,$6
 )
-RETURNING customer_id, first_name, last_name, email, password, city, phone_number, token
+RETURNING customer_id, first_name, last_name, email, password, city, phone_number
 `
 
 type CreatecustomerParams struct {
-	FirstName   string      `json:"first_name"`
-	LastName    string      `json:"last_name"`
-	Email       string      `json:"email"`
-	Password    string      `json:"password"`
-	City        string      `json:"city"`
-	PhoneNumber string      `json:"phone_number"`
-	Token       pgtype.Text `json:"token"`
+	FirstName   string `json:"first_name"`
+	LastName    string `json:"last_name"`
+	Email       string `json:"email"`
+	Password    string `json:"password"`
+	City        string `json:"city"`
+	PhoneNumber string `json:"phone_number"`
 }
 
 func (q *Queries) Createcustomer(ctx context.Context, arg CreatecustomerParams) (Customer, error) {
@@ -38,7 +35,6 @@ func (q *Queries) Createcustomer(ctx context.Context, arg CreatecustomerParams) 
 		arg.Password,
 		arg.City,
 		arg.PhoneNumber,
-		arg.Token,
 	)
 	var i Customer
 	err := row.Scan(
@@ -49,7 +45,6 @@ func (q *Queries) Createcustomer(ctx context.Context, arg CreatecustomerParams) 
 		&i.Password,
 		&i.City,
 		&i.PhoneNumber,
-		&i.Token,
 	)
 	return i, err
 }
@@ -64,7 +59,7 @@ func (q *Queries) Deletecustomer(ctx context.Context, customerID int32) error {
 }
 
 const getCustomer = `-- name: GetCustomer :one
-SELECT customer_id, first_name, last_name, email, password, city, phone_number, token FROM customer
+SELECT customer_id, first_name, last_name, email, password, city, phone_number FROM customer
 WHERE customer_id = $1 LIMIT 1
 `
 
@@ -79,13 +74,32 @@ func (q *Queries) GetCustomer(ctx context.Context, customerID int32) (Customer, 
 		&i.Password,
 		&i.City,
 		&i.PhoneNumber,
-		&i.Token,
+	)
+	return i, err
+}
+
+const getCustomerByEmail = `-- name: GetCustomerByEmail :one
+SELECT customer_id, first_name, last_name, email, password, city, phone_number FROM customer
+WHERE email = $1 LIMIT 1
+`
+
+func (q *Queries) GetCustomerByEmail(ctx context.Context, email string) (Customer, error) {
+	row := q.db.QueryRow(ctx, getCustomerByEmail, email)
+	var i Customer
+	err := row.Scan(
+		&i.CustomerID,
+		&i.FirstName,
+		&i.LastName,
+		&i.Email,
+		&i.Password,
+		&i.City,
+		&i.PhoneNumber,
 	)
 	return i, err
 }
 
 const listCustomers = `-- name: ListCustomers :many
-SELECT customer_id, first_name, last_name, email, password, city, phone_number, token FROM customer
+SELECT customer_id, first_name, last_name, email, password, city, phone_number FROM customer
 ORDER BY customer_id
 `
 
@@ -106,7 +120,6 @@ func (q *Queries) ListCustomers(ctx context.Context) ([]Customer, error) {
 			&i.Password,
 			&i.City,
 			&i.PhoneNumber,
-			&i.Token,
 		); err != nil {
 			return nil, err
 		}
@@ -119,20 +132,19 @@ func (q *Queries) ListCustomers(ctx context.Context) ([]Customer, error) {
 }
 
 const updatecustomer = `-- name: Updatecustomer :one
-UPDATE customer SET first_name = $2 , last_name = $3 , email = $4 , password=$5 , city = $6 , phone_number = $7, token = $8
+UPDATE customer SET first_name = $2 , last_name = $3 , email = $4 , password=$5 , city = $6 , phone_number = $7
 WHERE customer_id = $1
-RETURNING customer_id, first_name, last_name, email, password, city, phone_number, token
+RETURNING customer_id, first_name, last_name, email, password, city, phone_number
 `
 
 type UpdatecustomerParams struct {
-	CustomerID  int32       `json:"customer_id"`
-	FirstName   string      `json:"first_name"`
-	LastName    string      `json:"last_name"`
-	Email       string      `json:"email"`
-	Password    string      `json:"password"`
-	City        string      `json:"city"`
-	PhoneNumber string      `json:"phone_number"`
-	Token       pgtype.Text `json:"token"`
+	CustomerID  int32  `json:"customer_id"`
+	FirstName   string `json:"first_name"`
+	LastName    string `json:"last_name"`
+	Email       string `json:"email"`
+	Password    string `json:"password"`
+	City        string `json:"city"`
+	PhoneNumber string `json:"phone_number"`
 }
 
 func (q *Queries) Updatecustomer(ctx context.Context, arg UpdatecustomerParams) (Customer, error) {
@@ -144,7 +156,6 @@ func (q *Queries) Updatecustomer(ctx context.Context, arg UpdatecustomerParams) 
 		arg.Password,
 		arg.City,
 		arg.PhoneNumber,
-		arg.Token,
 	)
 	var i Customer
 	err := row.Scan(
@@ -155,7 +166,6 @@ func (q *Queries) Updatecustomer(ctx context.Context, arg UpdatecustomerParams) 
 		&i.Password,
 		&i.City,
 		&i.PhoneNumber,
-		&i.Token,
 	)
 	return i, err
 }

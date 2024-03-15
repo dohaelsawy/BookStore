@@ -23,6 +23,7 @@ type Querier interface {
 	Deletecustomer(ctx context.Context, customerID int32) error
 	GetBook(ctx context.Context, bookID int32) (Book, error)
 	GetCustomer(ctx context.Context, customerID int32) (Customer, error)
+	GetCustomerByEmail(ctx context.Context, email string) (Customer, error)
 	GetOrder(ctx context.Context, customerOrderID int32) (CustomerOrder, error)
 	GetOrderLine(ctx context.Context, lineID int32) (OrderLine, error)
 	GetPaymentTransaction(ctx context.Context, transactionID int32) (TransactionPayment, error)

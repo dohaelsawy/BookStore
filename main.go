@@ -22,7 +22,10 @@ func main() {
 		log.Fatal("the error is in db connection ... panic ", err)
 	}
 	store := db.NewStore(connPool)
-	server := api.NewServer(store, logger)
+	server ,err := api.NewServer(store, logger , config)
+	if err != nil {
+		log.Fatal("can't initial a server ... pannniccc!!!!")
+	}
 
 	err = server.Start(config.ServerAdress)
 	if err != nil {
